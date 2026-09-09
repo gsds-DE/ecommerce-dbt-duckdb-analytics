@@ -1,0 +1,13 @@
+
+    
+    
+    
+    create table "dev"."main"."raw_payments" ("order_id" text,"payment_sequential" integer,"payment_type" text,"payment_installments" integer,"payment_value" float8)
+  ;
+    -- dbt seed --
+    
+          COPY "dev"."main"."raw_payments" FROM 'C:\Users\gurs\Documents\gs_dbt_project\dbt_project_1\seeds\raw_payments.csv' (FORMAT CSV, HEADER TRUE, DELIMITER ',')
+        
+
+;
+  

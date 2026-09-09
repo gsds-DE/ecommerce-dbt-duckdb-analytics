@@ -1,0 +1,23 @@
+version: 2
+
+models:
+  - name: fct_orders
+    description: "Core fact table combining order lifecycle events, customer location attributes, and pivoted payment breakdown."
+    columns:
+      - name: order_id
+        description: "Primary key for the fact table."
+        tests:
+          - unique
+          - not_null
+
+      - name: customer_id
+        description: "Foreign key linking to stg_customers."
+        tests:
+          - not_null
+          - relationships:
+              arguments:
+                to: ref('stg_customers')
+                field: customer_id
+
+      - name: total_payment_amount
+        description: "Total monetary amount paid across all payment methods."

@@ -1,0 +1,68 @@
+# dbt schema specification version (always 2 for modern dbt)
+version: 2
+
+models:
+  # =========================================================================
+  # MODEL: stg_customers
+  # =========================================================================
+  - name: stg_customers
+    description: "Staging view for raw customer records. Cleans zip code formats and standardizes city/state casing."
+    columns:
+      - name: customer_id
+        description: "Primary key for a specific order's customer record."
+        tests:
+          - unique
+          - not_null
+
+      - name: customer_unique_id
+        description: "Unique identifier representing a real-world person across multiple orders."
+
+      - name: city
+        description: "Standardized lowercase customer city name."
+
+      - name: state
+        description: "Uppercase two-letter Brazilian state abbreviation (e.g., SP, RJ)."
+
+  # =========================================================================
+  # MODEL: stg_orders
+  # =========================================================================
+  - name: stg_orders
+    description: "Staging view for e-commerce orders. Casts raw text timestamps into native DuckDB TIMESTAMP types."
+    columns:
+      - name: order_id
+        description: "Primary key representing a unique customer purchase order."
+        tests:
+          - unique
+          - not_null
+
+      - name: customer_id
+        description: "Foreign key linking the order to stg_customers.customer_id."
+        tests:
+          - not_null
+
+      - name: order_status
+        description: "Current lifecycle status of the order (e.g., delivered, shipped, canceled)."
+        tests:
+          - accepted_values:
+              arguments:
+                values: ['delivered', 'shipped', 'canceled', 'invoiced', 'processing', 'approved', 'unavailable', 'created']
+                
+      - name: purchased_at
+        description: "Timestamp indicating when the order was placed by the customer."
+
+  # =========================================================================
+  # MODEL: stg_payments
+  # =========================================================================
+  - name: stg_payments
+    description: "Staging view for transaction payment channels, installment counts, and total monetary values."
+    columns:
+      - name: order_id
+        description: "Foreign key referencing the parent order."
+        tests:
+          - not_null
+
+      - name: payment_type
+        description: "Method used to pay for the order (e.g., credit_card, boleto, voucher, debit_card)."
+
+      - name: payment_amount
+        description: "Total transaction monetary amount in BRL (Brazilian Real)."

@@ -1,0 +1,1 @@
+select order_id, order_status, purchased_at from stg_orders

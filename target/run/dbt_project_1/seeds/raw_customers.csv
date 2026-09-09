@@ -1,0 +1,13 @@
+
+    
+    
+    
+    create table "dev"."main"."raw_customers" ("customer_id" text,"customer_unique_id" text,"customer_zip_code_prefix" integer,"customer_city" text,"customer_state" text)
+  ;
+    -- dbt seed --
+    
+          COPY "dev"."main"."raw_customers" FROM 'C:\Users\gurs\Documents\gs_dbt_project\dbt_project_1\seeds\raw_customers.csv' (FORMAT CSV, HEADER TRUE, DELIMITER ',')
+        
+
+;
+  
