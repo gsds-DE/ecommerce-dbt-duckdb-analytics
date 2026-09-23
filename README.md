@@ -165,3 +165,7 @@ SELECT * FROM 'seeds/raw_orders.csv' LIMIT 10;
 
 -- Export query results directly to Parquet or CSV
 COPY (SELECT * FROM raw_orders) TO 'output_orders.parquet' (FORMAT PARQUET);
+
+## Pipeline Architecture & DAG Lineage
+
+![dbt DAG Lineage Graph](assets/dag_lineage.png)
